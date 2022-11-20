@@ -3,17 +3,14 @@ pragma solidity >=0.4.25 <=0.8.17;
 
 import "./types/MarketTypes.sol";
 
-/// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed. However, in this mock library, no actual call is performed.
-/// @author Zondax AG
-/// @dev Methods prefixed with mock_ will not be available in the real library. These methods are merely used to set mock state. Note that this interface will likely break in the future as we align it
-//       with that of the real library!
+/// @title MarketAPI for FAFU storage deals
+/// @author UltimateRoman
+
 contract MarketAPI {
     mapping(string => uint256) balances;
     mapping(uint64 => MarketTypes.MockDeal) deals;
 
-    constructor() {
-        mock_generate_deals();
-    }
+    constructor() {}
 
     /// @notice Deposits the received value into the balance held in escrow.
     /// @dev Because this is a mock method, no real balance is being deducted from the caller, nor incremented in the Storage Market actor (f05).
@@ -180,31 +177,8 @@ contract MarketAPI {
         require(success, "client contract failed to authorize deal publish");
     }
 
-    /// @notice Adds mock deal data to the internal state of this mock.
-    /// @dev Feel free to adjust the data here to make it align with deals in your network.
-    function mock_generate_deals() internal {
-        MarketTypes.MockDeal memory deal_67;
-        deal_67.id = 67;
-        deal_67
-            .cid = "baga6ea4seaqlkg6mss5qs56jqtajg5ycrhpkj2b66cgdkukf2qjmmzz6ayksuci";
-        deal_67.size = 8388608;
-        deal_67.verified = false;
-        deal_67.client = "t01109";
-        deal_67.provider = "t01113";
-        deal_67.label = "mAXCg5AIg8YBXbFjtdBy1iZjpDYAwRSt0elGLF5GvTqulEii1VcM";
-        deal_67.start = 25245;
-        deal_67.end = 545150;
-        deal_67.price_per_epoch = 1100000000000;
-        deal_67.provider_collateral = 0;
-        deal_67.client_collateral = 0;
-        deal_67.activated = 1;
-        deal_67.terminated = 0;
-
-        deals[deal_67.id] = deal_67;
-
-        // As EVM smart contract has a limited capacity for size (24KiB), we cannot set all deals directly here.
-        // Please, take them from docs.
-
-        // Add or replace more deals here.
+    /// @notice Adds a mock deal data to the internal state of this mock.
+    function mock_generate_deal(MarketTypes.MockDeal calldata mockDeal) public {
+        deals[mockDeal.id] = mockDeal;
     }
 }
