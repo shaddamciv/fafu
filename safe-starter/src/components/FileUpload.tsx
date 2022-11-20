@@ -33,7 +33,7 @@ export const FileUpload = (props: FileUploadProps): JSX.Element => {
       uploadFiles();
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
-        console.log("We got a file");
+        console.log("Requesting For CID");
         reader.onload = function (evt) {
           if (!evt.target) {
             return;
